@@ -16,6 +16,7 @@ class PDFForm(forms.Form):
         'accept': 'application/pdf'
     })
 
+
     def clean_pdf_file(self, *args, **kwargs):
         pdf = self.cleaned_data.get('pdf_file')
         print('PDF=> ', pdf)
@@ -27,6 +28,5 @@ class PDFForm(forms.Form):
 
         if kind.mime != 'application/pdf':
             raise ValidationError(_('Please select a valid PDF file'))
-
 
         return pdf
