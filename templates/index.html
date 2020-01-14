@@ -11,7 +11,7 @@
             top: 50%;
             left: 50%;
             width:50em;
-            height:30em;
+            height:33em;
             margin-top: -20em;
             margin-left: -25em;
             border: 2px solid #ccc;
@@ -140,13 +140,7 @@
 <div class="main w3-card-4">
     <h4 class="text-center text-uppercase w3-xlarge text-">Convert any pdf to mp3</h4>
     <div class="w3-center">
-        {% if audio_url %}
-            <a href="{{ audio_url }}" >
-                Download
-            </a>
-{#            {{ audio_url }}#}
-        {% endif %}
-        <form  method="post"  enctype="multipart/form-data">
+        <form  id='form' method="post"  enctype="multipart/form-data">
             {% csrf_token %}
             <div class="form-group">
                 <div class="file-upload text-center">
@@ -163,6 +157,7 @@
                     </div>
 
                     <small id="help" class="form-text text-muted">Only PDF files allowed.</small>
+                    <h6 class='text-bold'>Please note that processing  may take time depending on the size of your pdf file.</h6>
                     <br>
                         {{ form.pdf_file }}
 
@@ -172,6 +167,14 @@
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary text-uppercase w3-card-4 btn-lg w3-xlarge " id="submit">Convert</button>
+                   
+                {% if audio_url %}
+                 <br><br>
+                  <button type="submit" class="btn w3-khaki text-capitalize w3-card-4 btn-lg">
+                    <a href="{{ audio_url }}" download="{{public}}" target='blank'>play/download</a>
+                  </button>
+        {#            {{ audio_url }}#}
+                {% endif %}
 
                 <div class="w3-hide" id="loading">
                     <img src="{% static 'img/loading1.gif' %}" alt="" width="150">
@@ -221,8 +224,8 @@
 {#AJAX Handler #}
 $("#form").submit(function (e) {
     console.log("We are going");
-    e.preventDefault();
     $('#loading').removeClass('w3-hide');
+    $("#submit").prop("disabled", true)
     var form = $('#form');
     
     $.ajax({
